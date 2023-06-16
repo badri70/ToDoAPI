@@ -33,11 +33,10 @@ class TaskUpdateDeleteAPIView(generics.RetrieveUpdateDestroyAPIView):
     def put(self, request, *args, **kwargs):
         if not self.get_queryset().exists():
             raise ValidationError("Sorry it's not your task!")
-        self.update(request, *args, **kwargs)
-        return Response(status=status.HTTP_200_OK)
+        return self.update(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         if not self.get_queryset().exists():
             raise ValidationError("Sorry it's not your task!")
-        self.destroy(request, *args, **kwargs)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return self.destroy(request, *args, **kwargs)
+
