@@ -16,12 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
-from api.views import TaskListCreateAPIView, TaskUpdateDeleteAPIView
+from api.views import TaskListCreateAPIView, TaskUpdateDeleteAPIView, TaskCompleteAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/task/', TaskListCreateAPIView.as_view()),
     path('api/v1/task/<int:pk>/', TaskUpdateDeleteAPIView.as_view()),
+    path('api/v1/task/<int:pk>/complete/', TaskCompleteAPIView.as_view()),
     path('api-auth', include('rest_framework.urls')),
     path('api/v1/auth/', include('djoser.urls')),
     re_path(r'^auth/', include('djoser.urls.authtoken')),

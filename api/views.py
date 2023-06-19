@@ -2,8 +2,9 @@ from django.shortcuts import render
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from task.models import Task
-from .serializers import TaskSerializer
+from .serializers import TaskSerializer, TaskCompleteSerializer
 from rest_framework.exceptions import ValidationError
+from django.utils import timezone
 
 
 # Create your views here.
@@ -40,3 +41,15 @@ class TaskUpdateDeleteAPIView(generics.RetrieveUpdateDestroyAPIView):
             raise ValidationError("Sorry it's not your task!")
         return self.destroy(request, *args, **kwargs)
 
+
+class TaskCompleteAPIView(generics.UpdateAPIView):
+    serializer_class = TaskCompleteSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Task.objects.filter(user=user, pk=self.kwargs['pk'])
+
+    def perform_update(self, serializer):
+        serializer.instance.date_complete = timezone.now()
+        serializer.save()

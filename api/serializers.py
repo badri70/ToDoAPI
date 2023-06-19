@@ -11,3 +11,10 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ['id', 'title', 'memo', 'created_date', 'date_complete', 'important', 'user', 'user_id']
+
+
+class TaskCompleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ['id']
+        read_only_fields = ['title', 'memo', 'created_date', 'date_complete', 'important', 'user', 'user_id']
